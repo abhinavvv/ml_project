@@ -59,6 +59,26 @@ def align(base, other):  ## align the data according to Nasdaq trading dates
     result = np.hstack((base, container))   ## align one feather(in 'other') a time
     return result
 
+def shift(base,other):
+    container = np.zeros((len(base),1))
+    j=1
+    for i in range(len(base)):
+        if other[i,0] >= base[i,0]:
+            j=i
+            while (other[j,0] >= base[i,0]) and (j!=0):
+                j = j-1
+            j = j+1 if j+1 < len(other) else j
+            container[i] = other[j,1]
+        if other[i,0] < base[i,0]:
+            j=i
+            while(other[j,0] < base[i,0]) and (j != len(other)):
+                j = j+1
+            j = j+1 if j+1 < len(other) else j
+            container[i] = other[j+1,1]
+    result = np.hstack((base, container))
+    return result
+
+
 def normalize(data):
     numrows=len(data)
     numcolumns=len(data[0])
