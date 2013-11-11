@@ -74,7 +74,7 @@ def shift(base,other):
             while(other[j,0] < base[i,0]) and (j != len(other)):
                 j = j+1
             j = j+1 if j+1 < len(other) else j
-            container[i] = other[j+1,1]
+            container[i] = other[j,1]
     result = np.hstack((base, container))
     return result
 
