@@ -88,43 +88,73 @@ def normalize(data):
     data = data[1:,:]
     return
 
-startdate = '2002-01-25'
-enddate = '2003-07-26'
+startdate = '2007-01-04'
+enddate = '2011-12-04'
 data_nasdaq = qd.get('YAHOO/INDEX_IXIC', authtoken='YpYfVsyPaCGms8nrWRRM', \
                   trim_start = startdate, trim_end = enddate, \
-                  collapse='daily', returns='numpy')
+                  collapse='daily', returns='numpy')   ## Nasdaq
 
 data_nikkei225 = qd.get('YAHOO/INDEX_N225', authtoken='YpYfVsyPaCGms8nrWRRM', \
                   trim_start = startdate, trim_end = enddate, \
-                  collapse='daily', returns='numpy')
+                  collapse='daily', returns='numpy')    ## Japan Nikkei225
 
 data_HengSeng = qd.get('YAHOO/INDEX_HSI', authtoken='YpYfVsyPaCGms8nrWRRM', \
                   trim_start = startdate, trim_end = enddate, \
-                  collapse='daily', returns='numpy')
+                  collapse='daily', returns='numpy')  ## HK Hang Seng Index
+
+data_ASX200 = qd.get('YAHOO/INDEX_AXJO', authtoken='YpYfVsyPaCGms8nrWRRM', \
+                         trim_start = startdate, trim_end = enddate, \
+                         collapse='daily', returns='numpy')  ## Australia Securities Exchange
+
+data_STI = qd.get('YAHOO/INDEX_STI', authtoken='YpYfVsyPaCGms8nrWRRM', \
+                         trim_start = startdate, trim_end = enddate, \
+                         collapse='daily', returns='numpy')     ## Singapore Straits Times Index
 
 data_silver = qd.get('OFDP/SILVER_5', authtoken='YpYfVsyPaCGms8nrWRRM', \
                   trim_start = startdate, trim_end = enddate, \
-                  collapse='daily', returns='numpy')
-                  
-data_gspc = qd.get('YAHOO/INDEX_GSPC', authtoken='YpYfVsyPaCGms8nrWRRM', \
-                  trim_start = startdate, trim_end = enddate, \
-                  collapse='daily', returns='numpy')
+                  collapse='daily', returns='numpy')  ## London fixing price
 
+data_gold = qd.get('OFDP/GOLD_1', authtoken='YpYfVsyPaCGms8nrWRRM', \
+                  trim_start = startdate, trim_end = enddate, \
+                  collapse='daily', returns='numpy')  ## London AM fixing price
+
+data_oil = qd.get('FRED/DCOILWTICO', authtoken='YpYfVsyPaCGms8nrWRRM', \
+                  trim_start = startdate, trim_end = enddate, \
+                  collapse='daily', returns='numpy')  ## New York West Texax Intermediate Futures Price
+
+data_JPY = qd.get('QUANDL/USDJPY', authtoken='YpYfVsyPaCGms8nrWRRM', \
+                  trim_start = startdate, trim_end = enddate, \
+                  collapse='daily', returns='numpy')  ## USD vs JPY from Quandle, amalgamation of rates
+
+data_EUR = qd.get('QUANDL/EURUSD', authtoken='YpYfVsyPaCGms8nrWRRM', \
+                  trim_start = startdate, trim_end = enddate, \
+                  collapse='daily', returns='numpy')  ## EUR vs USD from Quandle, amalgamation of rates
+
+data_AUD = qd.get('QUANDL/USDAUD', authtoken='YpYfVsyPaCGms8nrWRRM', \
+                  trim_start = startdate, trim_end = enddate, \
+                  collapse='daily', returns='numpy')  ## USD vs AUD from Quandle, amalgamation of rates
+
+## filter in only relevant columns(date and price)
 nasdaq = buildData(data_nasdaq, 4)
 nikkei225 = buildData(data_nikkei225, 4)
 hengseng = buildData(data_HengSeng, 4)
-gspc = buildData(data_gspc,4)
 silver = buildData(data_silver, 1)
-
-
+sti = buildData(data_STI, 4)
+asx = buildData(data_ASX200, 4)
+gold = buildData(data_gold, 1)
+oil = buildData(data_oil, 1)
+jpy = buildData(data_JPY, 1)
+eur = buildData(data_EUR, 1)
+aud = buildData(data_AUD, 1)
+## align the data according to Nasdaq trading dates
 raw_data = align(nasdaq, nikkei225)
 raw_data = align(raw_data, hengseng)
+raw_data = align(raw_data, sti)
+raw_data = align(raw_data, asx)
+raw_data = align(raw_data, gold)
 raw_data = align(raw_data, silver)
-
+raw_data = align(raw_data, oil)
+raw_data = align(raw_data, jpy)
+raw_data = align(raw_data, eur)
+raw_data = align(raw_data, aud)
 writetofile('raw.csv',raw_data)
-
-
-
-
-
-
