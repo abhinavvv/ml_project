@@ -70,20 +70,21 @@ def shift(base,other):
         for i in range(len(temp)):
             other = np.vstack((other,temp[i]))
     for i in range(len(base)): # based out of nasdaq date 
-        if other[i,0] > base[i,0]:  #suppose other date is greater we check if this is the best date thats greater
+        if base[i,0] <= other[i,0]:  #suppose other date is greater we check if this is the best date thats greater
             j=i
-            while (other[j,0] > base[i,0]) and (j!=0):
-                j = j-1
-            j = j+1 if j+1 < len(other) else j
+            while True:
+              j = j-1
+              if (base[i,0] > other[j,0]) or (j <= 0):
+                break
+            j = i if j < 0 else j
             container[i] = other[j,1]
-        if other[i,0] <= base[i,0]:  #suppose other date is lesser we go to best greatest date
+        if base[i,0] > other[i,0]:  #suppose other date is lesser we go to best greatest date
             j=i
-            while(other[j,0] <= base[i,0]):
-                if j+1 < len(other):
-                    j = j+1
-                else:
-                    break
-            container[i] = other[j,1]
+            while True:
+              j = j+1
+              if (j+1 >= len(other)) or (base[i,0] <= other[j,0]):
+                break
+            container[i] = other[j-1,1]
     result = np.hstack((base, container))
     return result
 
