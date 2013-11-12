@@ -61,19 +61,28 @@ def align(base, other):  ## align the data according to Nasdaq trading dates
 
 def shift(base,other):
     container = np.zeros((len(base),1))
+    temp = []
     j=1
-    for i in range(len(base)):
-        if other[i,0] >= base[i,0]:
+    if len(base) > len(other): #to make both of equal size
+        for i in range(len(base)-len(other)):
+            other_value = [other[len(other)-1][0],other[len(other)-1][1]]
+            temp.append(other_value)
+        for i in range(len(temp)):
+            other = np.vstack((other,temp[i]))
+    for i in range(len(base)): # based out of nasdaq date 
+        if other[i,0] > base[i,0]:  #suppose other date is greater we check if this is the best date thats greater
             j=i
-            while (other[j,0] >= base[i,0]) and (j!=0):
+            while (other[j,0] > base[i,0]) and (j!=0):
                 j = j-1
             j = j+1 if j+1 < len(other) else j
             container[i] = other[j,1]
-        if other[i,0] < base[i,0]:
+        if other[i,0] <= base[i,0]:  #suppose other date is lesser we go to best greatest date
             j=i
-            while(other[j,0] < base[i,0]) and (j != len(other)):
-                j = j+1
-            j = j+1 if j+1 < len(other) else j
+            while(other[j,0] <= base[i,0]):
+                if j+1 < len(other):
+                    j = j+1
+                else:
+                    break
             container[i] = other[j,1]
     result = np.hstack((base, container))
     return result
@@ -140,12 +149,15 @@ aud = buildData(data_AUD, 1)
 raw_data = align(nasdaq, nikkei225)
 raw_data = align(raw_data, hengseng)
 raw_data = align(raw_data, sti)
-raw_data = align(raw_data, asx)
+#raw_data = shift(raw_data,sti)
+#raw_data = align(raw_data, asx)
+raw_data = shift(raw_data, asx)
 raw_data = align(raw_data, gold)
 raw_data = align(raw_data, silver)
-raw_data = shift(raw_data, oil)
-##raw_data = align(raw_data, oil)
+#raw_data = shift(raw_data, oil)
+raw_data = align(raw_data, oil)
 raw_data = align(raw_data, jpy)
+#raw_data = shift(raw_data,jpy)
 raw_data = align(raw_data, eur)
 raw_data = align(raw_data, aud)
 writetofile('raw.csv',raw_data)
