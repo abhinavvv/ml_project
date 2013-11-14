@@ -36,5 +36,7 @@ raw_data = readdata('interpolated.csv')
 numcolumns = len(raw_data[0])
 data = raw_data[:,1:numcolumns]
 difference = difference(data) ## all values before preprocessing
-
 writetofile('toAnalyze.csv', difference)
+scaler = preprocessing.StandardScaler().fit(difference)
+scaler.transform(difference)    ## scaling the features to have 0 mean
+writetofile('scaled.csv', difference)
