@@ -2,7 +2,7 @@ import numpy as np
 import csv
 
 def readdata(filename):
-    reader = np.genfromtxt(filename, dtype = float, delimiter=',')
+    reader = np.genfromtxt(filename, dtype = np.object, delimiter=',')
     return reader
 
 def writetofile(filename, data):
