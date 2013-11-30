@@ -1,9 +1,10 @@
 import numpy as np
 import csv
+import pandas as pd
 
 def readdata(filename):
-    reader = np.genfromtxt(filename, dtype = np.object, delimiter=',')
-    return reader
+   reader = np.genfromtxt(filename, dtype=np.ndarray, delimiter=";")
+   return reader
 
 def writetofile(filename, data):
     csvfile = file(filename, 'wb') ## write to a csv file
@@ -31,7 +32,7 @@ def linearInterpolation(a):
                     break
             if finish == 1:
                 break
-            temp[j+1,i] = (a[j,i] + a[k+1,i])/2 if k > j else a[j+1,i]
+            temp[j+1,i] = (float(a[j,i]) + float(a[k+1,i]))/2 if k > j else a[j+1,i]
     return temp
 
 raw_data = readdata('raw.csv')
