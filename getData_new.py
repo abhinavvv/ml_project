@@ -171,9 +171,9 @@ oil = buildData(data_oil, 1)
 jpy = buildData(data_JPY, 1)
 eur = buildData(data_EUR, 1)
 aud = buildData(data_AUD, 1)
-sp= buildData(data_SP, 4)
+sp= buildData(data_SP, 1)
 dji = buildData(data_DJI, 1)
-fste = buildData(data_FSTE100, 4)
+fste = buildData(data_FSTE100, 1)
 palladium = buildData(data_Palladium, 1)
 platinum = buildData(data_Platinum, 1)
 ## align and shift the data according to Nasdaq trading dates
@@ -181,21 +181,15 @@ raw_data = align(nasdaq, nikkei225)
 raw_data = align(raw_data, hengseng)
 raw_data = align(raw_data, sti)
 raw_data = align(raw_data, asx)
-raw_data = shift(raw_data, sp)
-raw_data = shift(raw_data, dji)
-raw_data = shift(raw_data, fste)
+raw_data = align(raw_data, sp)
+raw_data = align(raw_data, dji)
+raw_data = align(raw_data, fste)
 raw_data = align(raw_data, gold)
 raw_data = align(raw_data, silver)
-raw_data = shift(raw_data, oil)
+raw_data = align(raw_data, oil)
 raw_data = align(raw_data, palladium)
 raw_data = align(raw_data, platinum)
 raw_data = align(raw_data, jpy)
 raw_data = align(raw_data, eur)
 raw_data = align(raw_data, aud)
-writetofile('raw.csv',raw_data)
-
-
-
-
-
-
+writetofile('new_raw.csv',raw_data)
